@@ -79,7 +79,7 @@ namespace play_motion
       if (!update_cb_)
         continue;
 
-      controller_manager_msgs::ListControllers srv;
+      /* controller_manager_msgs::ListControllers srv;
 
       if (!cm_client_.isValid())
         cm_client_ = initCmClient(nh_);
@@ -101,11 +101,45 @@ namespace play_motion
       }
 
       if (states == last_cstates_)
-        continue;
+        continue; */
+
+      ControllerStates states;
+      ControllerJoints joints;
+      states["torso_controller"] = RUNNING;
+      JointNames joints1;
+      joints1.push_back("torso_lift_joint");
+      joints["torso_controller"] = joints1;
+      states["head_traj_controller"] = RUNNING;
+      JointNames joints2;
+      joints2.push_back("head_pan_joint");
+      joints2.push_back("head_tilt_joint");
+      joints["head_traj_controller"] = joints2;
+      JointNames joints3;
+      joints3.push_back("r_shoulder_pan_joint");
+      joints3.push_back("r_shoulder_lift_joint");
+      joints3.push_back("r_upper_arm_roll_joint");
+      joints3.push_back("r_elbow_flex_joint");
+      joints3.push_back("r_forearm_roll_joint");
+      joints3.push_back("r_wrist_flex_joint");
+      joints3.push_back("r_wrist_roll_joint");
+      states["r_arm_controller"] = RUNNING;
+      joints["r_arm_controller"] = joints3;
+      JointNames joints4;
+      joints4.push_back("l_shoulder_pan_joint");
+      joints4.push_back("l_shoulder_lift_joint");
+      joints4.push_back("l_upper_arm_roll_joint");
+      joints4.push_back("l_elbow_flex_joint");
+      joints4.push_back("l_forearm_roll_joint");
+      joints4.push_back("l_wrist_flex_joint");
+      joints4.push_back("l_wrist_roll_joint");
+      states["l_arm_controller"] = RUNNING;
+      joints["l_arm_controller"] = joints4;
+
 
       ROS_INFO("The set of running joint trajectory controllers has changed, updating it.");
       update_timer_ = nh_.createTimer(ros::Duration(0), boost::bind(update_cb_, states, joints), true);
       last_cstates_ = states;
+      /**/
     }
   }
 
